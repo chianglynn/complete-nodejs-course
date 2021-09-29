@@ -65,5 +65,4 @@ yargs.command({
 
 yargs.parse(); // = console.log(yargs.argv);
 // termianl command: node app.js --help
-// termianl command: node app.js add/remove/list/read
-// termianl command: node app.js add --title="Shopping list"
+// termianl command: node app.js add --title="t" --body="b"
