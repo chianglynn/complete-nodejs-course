@@ -4,7 +4,7 @@ const notes = require('./notes');
 // custom yargs version
 yargs.version('1.1.0');
 
-// create add commands
+// create add, remove, list, read commands
 yargs.command({
     command: 'add',
     describe: 'Add a new note',
@@ -45,6 +45,21 @@ yargs.command({
     describe: 'List all notes',
     handler() {
         notes.listNotes();
+    },
+});
+
+yargs.command({
+    command: 'read',
+    describe: 'Read a note',
+    builder: {
+        title: {
+            describe: 'Note Title',
+            demandOption: true,
+            type: 'string',
+        },
+    },
+    handler(argv) {
+        notes.readNote(argv.title);
     },
 });
 
