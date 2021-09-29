@@ -40,6 +40,14 @@ yargs.command({
     },
 });
 
+yargs.command({
+    command: 'list',
+    describe: 'List all notes',
+    handler() {
+        notes.listNotes();
+    },
+});
+
 yargs.parse(); // = console.log(yargs.argv);
 // termianl command: node app.js --help
 // termianl command: node app.js add/remove/list/read
