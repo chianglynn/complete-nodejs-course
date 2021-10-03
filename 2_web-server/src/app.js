@@ -1,6 +1,9 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express();
 
@@ -40,7 +43,23 @@ app.get('/help', (request, response) => {
 });
 
 app.get('/weather', (request, response) => {
-    response.send('Weather page');
+    if (!request.query.address) return response.send({
+        error: 'Please enter a address',
+    });
+
+    geocode(request.query.address, (error, { location, latitude, longitude } = {}) => {
+        if (error) return response.send({ error });
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            if (error) return response.send({ error });
+
+            response.send({
+                address: request.query.address,
+                location,
+                forecast: forecastData,
+            });
+        });
+    });
 });
 
 app.get('/help/*', (request, response) => {
