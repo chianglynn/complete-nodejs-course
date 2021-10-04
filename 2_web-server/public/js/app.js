@@ -18,7 +18,7 @@ const renderMessage = (data) => {
 
 const fetchAndRenderWeather = async () => {
     const searchLocation = searchInput.value;
-    const response = await fetch(`http://localhost:3000/weather?address=${searchLocation}`);
+    const response = await fetch(`/weather?address=${searchLocation}`);
     const data = await response.json();
 
     if (data.error) console.log(data.error);
