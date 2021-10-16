@@ -30,6 +30,10 @@ router.get('/tasks', auth, async (req, res) => {
         await req.user.populate({
             path: 'tasks',
             match,
+            options: {
+                limit: +req.query.limit,
+                skip: +req.query.skip,
+            },
         }); // It doesn't need .execPopulate() after .populate() anymore in the latest v6 version of Mongoose.
         res.send(req.user.tasks);
     } catch (error) {
