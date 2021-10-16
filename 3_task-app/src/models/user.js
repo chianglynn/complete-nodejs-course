@@ -56,7 +56,7 @@ userSchema.methods.toJSON = function () {
     return userObject;
 };
 
-userSchema.virtual('task', {
+userSchema.virtual('tasks', {
     ref: 'Task',
     localField: '_id',
     foreignField: 'owner',

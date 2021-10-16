@@ -17,11 +17,21 @@ router.post('/tasks', auth, async (req, res) => {
 router.get('/tasks', auth, async (req, res) => {
     try {
         // Solution 1
-        const tasks = await Task.find({ owner: req.user._id });
-        res.send(tasks);
+        // const tasks = await Task.find({ owner: req.user._id });
+        // res.send(tasks);
+
         // Solution 2
-        // await req.user.populate('task').execPopulate();
-        // res.send(req.user.tasks);
+        const match = {};
+
+        if (req.query.completed) {
+            match.completed = req.query.completed === 'true';
+        }
+
+        await req.user.populate({
+            path: 'tasks',
+            match,
+        }); // It doesn't need .execPopulate() after .populate() anymore in the latest v6 version of Mongoose.
+        res.send(req.user.tasks);
     } catch (error) {
         res.status(500).send(error);
     }
