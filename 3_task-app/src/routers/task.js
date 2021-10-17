@@ -22,9 +22,15 @@ router.get('/tasks', auth, async (req, res) => {
 
         // Solution 2
         const match = {};
+        const sort = {};
 
         if (req.query.completed) {
             match.completed = req.query.completed === 'true';
+        }
+
+        if (req.query.sortBy) {
+            const parts = req.query.sortBy.split(':');
+            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
         }
 
         await req.user.populate({
@@ -33,6 +39,7 @@ router.get('/tasks', auth, async (req, res) => {
             options: {
                 limit: +req.query.limit,
                 skip: +req.query.skip,
+                sort,
             },
         }); // It doesn't need .execPopulate() after .populate() anymore in the latest v6 version of Mongoose.
         res.send(req.user.tasks);
