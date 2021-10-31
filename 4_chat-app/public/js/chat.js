@@ -1,6 +1,7 @@
 const socket = io();
 const messages = document.getElementById('messages');
 const messageTemplate = document.getElementById('message-template').innerHTML;
+const locationMessageTemplate = document.getElementById('location-message-template').innerHTML;
 const messageForm = document.getElementById('message-form');
 const messageInput = messageForm.querySelector('input');
 const messageButton = messageForm.querySelector('button');
@@ -10,6 +11,11 @@ const sendLocationButton = document.getElementById('send-location');
 socket.on('message', message => {
     console.log(message);
     const html = Mustache.render(messageTemplate, { message });
+    messages.insertAdjacentHTML('beforeend', html);
+});
+socket.on('locationMessage', url => {
+    console.log(url);
+    const html = Mustache.render(locationMessageTemplate, { url });
     messages.insertAdjacentHTML('beforeend', html);
 });
 
