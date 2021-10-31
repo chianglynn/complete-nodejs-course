@@ -10,7 +10,7 @@ const sendLocationButton = document.getElementById('send-location');
 
 socket.on('message', message => {
     console.log(message);
-    const html = Mustache.render(messageTemplate, { message });
+    const html = Mustache.render(messageTemplate, { message: message.text, createdAt: moment(message.createdAt).format('hh:mm a') });
     messages.insertAdjacentHTML('beforeend', html);
 });
 socket.on('locationMessage', url => {
