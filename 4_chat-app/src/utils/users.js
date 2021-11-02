@@ -12,7 +12,7 @@ const addUser = ({ id, username, room }) => {
 
     const existingUser = users.find(user => user.room === room && user.username === username);
 
-    if (username) {
+    if (existingUser) {
         return { error: 'Username is in use.' }
     }
 
