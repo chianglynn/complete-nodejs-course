@@ -11,6 +11,18 @@ const sendLocationButton = document.getElementById('send-location');
 
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
+const autoscroll = () => {
+    const newMessage = messages.lastElementChild;
+    const newMessageStyles = getComputedStyle(newMessage);
+    const newMessageMarginBottom = +newMessageStyles.marginBottom;
+    const newMessageHeight = newMessage.offsetHeight + newMessageMarginBottom;
+    const visibleHeight = messages.offsetHeight;
+    const containerHeight = messages.scrollHeight;
+    const scrollOffset = messages.scrollTop + visibleHeight;
+
+    if (containerHeight - newMessageHeight <= scrollOffset) messages.scrollTop = messages.scrollHeight;
+};
+
 socket.on('message', message => {
     console.log(message);
     const html = Mustache.render(messageTemplate, {
@@ -19,6 +31,7 @@ socket.on('message', message => {
         createdAt: moment(message.createdAt).format('hh:mm a'),
     });
     messages.insertAdjacentHTML('beforeend', html);
+    autoscroll();
 });
 socket.on('locationMessage', message => {
     console.log(message);
@@ -28,6 +41,7 @@ socket.on('locationMessage', message => {
         createdAt: moment(message.createdAt).format('hh:mm a'),
     });
     messages.insertAdjacentHTML('beforeend', html);
+    autoscroll();
 });
 socket.on('roomData', ({ room, users }) => {
     const html = Mustache.render(sidebarTemplate, {
