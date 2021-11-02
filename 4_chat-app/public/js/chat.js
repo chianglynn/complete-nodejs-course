@@ -7,6 +7,7 @@ const messageInput = messageForm.querySelector('input');
 const messageButton = messageForm.querySelector('button');
 const sendLocationButton = document.getElementById('send-location');
 
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
 socket.on('message', message => {
     console.log(message);
@@ -52,3 +53,5 @@ sendLocationButton.addEventListener('click', () => {
         });
     });
 });
+
+socket.emit('join', { username, room });
